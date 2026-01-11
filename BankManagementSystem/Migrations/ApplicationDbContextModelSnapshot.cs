@@ -127,7 +127,7 @@ namespace BankManagementSystem.Migrations
             modelBuilder.Entity("BankManagementSystem.Models.AccountCustomer", b =>
                 {
                     b.HasOne("BankManagementSystem.Models.Branch", "Branch")
-                        .WithMany()
+                        .WithMany("AccountCustomers")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -138,12 +138,22 @@ namespace BankManagementSystem.Migrations
             modelBuilder.Entity("BankManagementSystem.Models.Transaction", b =>
                 {
                     b.HasOne("BankManagementSystem.Models.AccountCustomer", "AccountCustomer")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("AccountCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AccountCustomer");
+                });
+
+            modelBuilder.Entity("BankManagementSystem.Models.AccountCustomer", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("BankManagementSystem.Models.Branch", b =>
+                {
+                    b.Navigation("AccountCustomers");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,4 +17,6 @@ public class AccountCustomer
     public Branch Branch { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+    public ICollection<Transaction> Transactions { get; set; }
+
 }

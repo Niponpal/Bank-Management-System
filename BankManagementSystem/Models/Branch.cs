@@ -8,4 +8,7 @@ public class Branch
     public string Address { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+    // Navigation
+    public ICollection<AccountCustomer> AccountCustomers { get; set; }
+
 }
