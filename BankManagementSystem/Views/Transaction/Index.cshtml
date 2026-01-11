@@ -4,46 +4,96 @@
     ViewData["Title"] = "Transaction List";
 }
 
-<h2>Transaction List</h2>
+<h2 class="mb-3">Transaction List</h2>
+<p>
+    <a asp-action="CreateOrEdit" class="btn btn-primary">Create New Account</a>
+</p>
 
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
         <tr>
-          
+            <th>#</th>
+            <th>Account Number</th>
+            <th>Customer Name</th>
             <th>Transaction Type</th>
             <th>Amount</th>
             <th>Reference</th>
             <th>Date</th>
-            <th style="width: 160px;">Actions</th>
+            <th style="width:120px;">Action</th>
         </tr>
     </thead>
+
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-               
-
-                <td>
-                    @if (item.TransactionType == 1)
-                    {
-                        <span class="badge bg-success">Deposit</span>
-                    }
-                    else if (item.TransactionType == 2)
-                    {
-                        <span class="badge bg-danger">Withdrawal</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-info">Transfer</span>
-                    }
-                </td>
-
-                <td>@item.Amount.ToString("0.00")</td>
-                <td>@item.Reference</td>
-                <td>@item.CreatedAt.ToString("dd-MMM-yyyy")</td>
-            </tr>
+        @{
+            int sl = 1;
         }
 
-        
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@sl</td>
+
+                    <!-- Account Number -->
+                    <td>
+                        @(item.AccountCustomer?.AccountNumber ?? "N/A")
+                    </td>
+
+                    <!-- Customer Name -->
+                    <td>
+                        @(item.AccountCustomer?.FullName ?? "N/A")
+                    </td>
+
+                    <!-- Transaction Type -->
+                    <td>
+                        @if (item.TransactionType == 1)
+                        {
+                            <span class="badge bg-success">Deposit</span>
+                        }
+                        else if (item.TransactionType == 2)
+                        {
+                            <span class="badge bg-danger">Withdrawal</span>
+                        }
+                        else if (item.TransactionType == 3)
+                        {
+                            <span class="badge bg-info">Transfer</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Unknown</span>
+                        }
+                    </td>
+
+                    <!-- Amount -->
+                    <td>@item.Amount.ToString("0.00")</td>
+
+                    <!-- Reference -->
+                    <td>@(string.IsNullOrEmpty(item.Reference) ? "N/A" : item.Reference)</td>
+
+                    <!-- Date -->
+                    <td>@item.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
+
+                    <!-- Action -->
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-info btn-sm">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+
+                sl++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-danger">
+                    No transaction found.
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

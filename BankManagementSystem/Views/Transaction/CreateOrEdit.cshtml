@@ -1,0 +1,32 @@
+﻿@model BankManagementSystem.Models.Transaction
+
+<h3>Create Transaction</h3>
+
+<form asp-action="CreateOrEdit" method="post">
+    <div class="mb-3">
+        <label>Account Customer ID</label>
+        <input asp-for="AccountCustomerId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Amount</label>
+        <input asp-for="Amount" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Transaction Type</label>
+        <select asp-for="TransactionType" class="form-control">
+            <option value="1">Deposit</option>
+            <option value="2">Withdrawal</option>
+            <option value="3">Transfer</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Reference</label>
+        <input asp-for="Reference" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

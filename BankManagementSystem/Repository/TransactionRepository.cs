@@ -56,12 +56,11 @@ public class TransactionRepository : ITransactionRepository
       var data = await _context.Transactions.FindAsync(transaction.Id, cancellationToken);
         if (data != null)
         {
-            data.AccountCustomerId = transaction.AccountCustomerId;
+         
             data.Amount = transaction.Amount;
             data.TransactionType = transaction.TransactionType;
             data.Reference = transaction.Reference;
             data.CreatedAt = transaction.CreatedAt;
-            data.AccountCustomer = transaction.AccountCustomer;
             await _context.SaveChangesAsync(cancellationToken);
             return data;
         }

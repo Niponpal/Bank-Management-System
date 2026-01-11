@@ -1,0 +1,105 @@
+﻿@model BankManagementSystem.Models.Transaction
+
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+<h2 class="mb-3">Transaction Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <strong>Transaction Information</strong>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <th style="width:30%">Transaction ID</th>
+                <td>@Model.Id</td>
+            </tr>
+
+            <tr>
+                <th>Transaction Type</th>
+                <td>
+                    @if (Model.TransactionType == 1)
+                    {
+                        <span class="badge bg-success">Deposit</span>
+                    }
+                    else if (Model.TransactionType == 2)
+                    {
+                        <span class="badge bg-danger">Withdrawal</span>
+                    }
+                    else if (Model.TransactionType == 3)
+                    {
+                        <span class="badge bg-info">Transfer</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Unknown</span>
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <th>Amount</th>
+                <td>@Model.Amount.ToString("0.00")</td>
+            </tr>
+
+            <tr>
+                <th>Reference</th>
+                <td>@(string.IsNullOrEmpty(Model.Reference) ? "N/A" : Model.Reference)</td>
+            </tr>
+
+            <tr>
+                <th>Date</th>
+                <td>@Model.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
+            </tr>
+        </table>
+
+        <hr />
+
+        <h5>Account Information</h5>
+
+        <table class="table table-bordered">
+            <tr>
+                <th style="width:30%">Account Number</th>
+                <td>@Model.AccountCustomer?.AccountNumber ?? "N/A"</td>
+            </tr>
+
+            <tr>
+                <th>Customer Name</th>
+                <td>@Model.AccountCustomer?.FullName ?? "N/A"</td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td>@Model.AccountCustomer?.Phone ?? "N/A"</td>
+            </tr>
+
+            <tr>
+                <th>NID</th>
+                <td>@Model.AccountCustomer?.NID ?? "N/A"</td>
+            </tr>
+
+            <tr>
+                <th>Current Balance</th>
+                <td>
+                    @if (Model.AccountCustomer != null)
+                    {
+                        @Model.AccountCustomer.Balance.ToString("0.00")
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
+</div>
