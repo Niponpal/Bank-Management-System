@@ -1,0 +1,80 @@
+﻿@model BankManagementSystem.Models.AccountCustomer
+
+@{
+    ViewData["Title"] = "Account Customer Details";
+}
+
+<h2>Account Customer Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <strong>Account Information</strong>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <th style="width: 30%">Account Number</th>
+                <td>@Model.AccountNumber</td>
+            </tr>
+            <tr>
+                <th>Balance</th>
+                <td>@Model.Balance.ToString("0.00")</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Created At</th>
+                <td>@Model.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
+            </tr>
+        </table>
+
+        <hr />
+
+        <h5>Customer Information</h5>
+        <table class="table table-bordered">
+            <tr>
+                <th style="width: 30%">Full Name</th>
+                <td>@Model.FullName</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>@Model.Phone</td>
+            </tr>
+            <tr>
+                <th>NID</th>
+                <td>@Model.NID</td>
+            </tr>
+        </table>
+
+        <hr />
+
+        <h5>Branch Information</h5>
+        <table class="table table-bordered">
+            <tr>
+                <th style="width: 30%">Branch Name</th>
+                <td>@Model.Branch?.BranchName</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="CreateOrEdit" asp-route-id="@Model.Id" class="btn btn-warning">
+            Edit
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
+</div>
