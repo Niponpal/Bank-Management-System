@@ -66,5 +66,4 @@ public class AccountCustomerController : Controller
         await _accountCustomerRepository.DeleteAccountCustomerAsync(id,cancellationToken);
         return RedirectToAction(nameof(Index));
     }
-
 }
