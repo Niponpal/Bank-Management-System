@@ -16,4 +16,55 @@ public class AccountCustomerController : Controller
         var data = await _accountCustomerRepository.GetAllAccountCustomerAsync(cancellationToken);
         return View(data);
     }
+    [HttpGet]
+    public async Task<IActionResult> CreateOrEdit(int id,CancellationToken cancellationToken) 
+    {
+        if(id== 0)
+        {
+            return View(new Models.AccountCustomer());
+        }
+        else
+        {
+            var data = await _accountCustomerRepository.GetAccountCustomerByIdAsync(id,cancellationToken);
+            if(data != null)
+            {
+                return View(data);
+               
+            }
+            return NotFound();
+        }
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateOrEdit(Models.AccountCustomer accountCustomer,CancellationToken cancellationToken)
+    {
+      
+            if(accountCustomer.Id == 0)
+            {
+                await _accountCustomerRepository.AddMAccountCustomerAsync(accountCustomer,cancellationToken);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                await _accountCustomerRepository.UpdateAccountCustomerAsync(accountCustomer,cancellationToken);
+                return RedirectToAction(nameof(Index));
+            }  
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id,CancellationToken cancellationToken)
+    {
+        var data = await _accountCustomerRepository.GetAccountCustomerByIdAsync(id,cancellationToken);
+        if(data != null)
+        {
+            return View(data);
+        }
+        return NotFound();
+    }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
+    {
+        await _accountCustomerRepository.DeleteAccountCustomerAsync(id,cancellationToken);
+        return RedirectToAction(nameof(Index));
+    }
+
 }

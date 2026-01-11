@@ -1,4 +1,5 @@
 using BankManagementSystem.Data;
+using BankManagementSystem.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 // Configure DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Coon")));
+// Register the repository
+builder.Services.AddScoped<IAccountCustomerRepository, AccountCustomerRepository>();
 
 var app = builder.Build();
 
