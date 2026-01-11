@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Coon")));
 // Register the repository
 builder.Services.AddScoped<IAccountCustomerRepository, AccountCustomerRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 
 var app = builder.Build();
 

@@ -1,0 +1,45 @@
+﻿@model BankManagementSystem.Models.Branch
+
+@{
+    ViewData["Title"] = "Branch Details";
+}
+
+<h2>Branch Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <strong>Branch Information</strong>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <th style="width:30%">Branch Code</th>
+                <td>@Model.BranchCode</td>
+            </tr>
+            <tr>
+                <th>Branch Name</th>
+                <td>@Model.BranchName</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>@Model.Address</td>
+            </tr>
+            <tr>
+                <th>Created At</th>
+                <td>@Model.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="CreateOrEdit" asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            Edit
+        </a>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
+</div>

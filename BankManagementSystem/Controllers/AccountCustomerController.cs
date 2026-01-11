@@ -17,7 +17,7 @@ public class AccountCustomerController : Controller
         return View(data);
     }
     [HttpGet]
-    public async Task<IActionResult> CreateOrEdit(int id,CancellationToken cancellationToken) 
+    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken) 
     {
         if(id== 0)
         {
@@ -51,7 +51,7 @@ public class AccountCustomerController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Details(int id,CancellationToken cancellationToken)
+    public async Task<IActionResult> Details(long id,CancellationToken cancellationToken)
     {
         var data = await _accountCustomerRepository.GetAccountCustomerByIdAsync(id,cancellationToken);
         if(data != null)
@@ -61,7 +61,7 @@ public class AccountCustomerController : Controller
         return NotFound();
     }
     [HttpPost]
-    public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete(long id,CancellationToken cancellationToken)
     {
         await _accountCustomerRepository.DeleteAccountCustomerAsync(id,cancellationToken);
         return RedirectToAction(nameof(Index));

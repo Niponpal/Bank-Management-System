@@ -19,7 +19,7 @@ public class AccountCustomerRepository : IAccountCustomerRepository
            return accountCustomer;
     }
 
-    public async Task<AccountCustomer> DeleteAccountCustomerAsync(int id, CancellationToken cancellationToken)
+    public async Task<AccountCustomer> DeleteAccountCustomerAsync(long id, CancellationToken cancellationToken)
     {
       var data = await _context.AccountCustomers.FindAsync(id,cancellationToken);
         if (data != null)
@@ -30,7 +30,7 @@ public class AccountCustomerRepository : IAccountCustomerRepository
         return null!;
     }
 
-    public async Task<AccountCustomer?> GetAccountCustomerByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<AccountCustomer?> GetAccountCustomerByIdAsync(long id, CancellationToken cancellationToken)
     {
         var data = await _context.AccountCustomers.FindAsync(id,cancellationToken);
         if (data != null)

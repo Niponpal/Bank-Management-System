@@ -1,5 +1,6 @@
 ﻿using BankManagementSystem.Data;
 using BankManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankManagementSystem.Repository;
 
@@ -10,28 +11,57 @@ public class BranchRepository : IBranchRepository
     {
         _context = context;
     }
-    public Task<Branch> AddBranchAsync(Branch branch, CancellationToken cancellationToken)
+    public async Task<Branch> AddBranchAsync(Branch branch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _context.Branches.AddAsync(branch, cancellationToken);
+        await _context.SaveChangesAsync();
+        return branch;
+
     }
 
-    public Task<Branch> DeleteBranchAsync(int id, CancellationToken cancellationToken)
+    public async Task<Branch> DeleteBranchAsync(long id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+         var data = await _context.Branches.FindAsync(id, cancellationToken);
+        if (data != null)
+        {
+            _context.Branches.Remove(data);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        return null!;
     }
 
-    public Task<IEnumerable<Branch>> GetAllBranchAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Branch>> GetAllBranchAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var data = await _context.Branches.ToListAsync(cancellationToken);
+        if (data != null)
+        {
+            return data;
+        }
+        return null;
     }
 
-    public Task<Branch?> GetBranchByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Branch?> GetBranchByIdAsync(long id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+      var data = await _context.Branches.FindAsync(id,cancellationToken);
+        if (data != null)
+        {
+           return data;
+        }
+        return null;
     }
 
-    public Task<Branch?> UpdateBranchAsync(Branch branch, CancellationToken cancellationToken)
+    public async Task<Branch?> UpdateBranchAsync(Branch branch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+       var data = await _context.Branches.FindAsync(branch.Id,cancellationToken);
+        if (data != null)
+        {
+            data.BranchCode = branch.BranchCode;
+            data.BranchName = branch.BranchName;
+            data.Address = branch.Address;
+            data.CreatedAt = branch.CreatedAt;
+            await _context.SaveChangesAsync(cancellationToken);
+            return data;
+        }
+        return null;
     }
 }

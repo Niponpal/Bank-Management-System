@@ -1,0 +1,53 @@
+﻿@model BankManagementSystem.Models.Branch
+
+@{
+    bool isEdit = Model != null && Model.Id > 0;
+    ViewData["Title"] = isEdit ? "Edit Branch" : "Create Branch";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <form asp-action="CreateOrEdit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Branch Code -->
+            <div class="mb-3">
+                <label asp-for="BranchCode" class="form-label"></label>
+                <input asp-for="BranchCode" class="form-control" />
+                <span asp-validation-for="BranchCode" class="text-danger"></span>
+            </div>
+
+            <!-- Branch Name -->
+            <div class="mb-3">
+                <label asp-for="BranchName" class="form-label"></label>
+                <input asp-for="BranchName" class="form-control" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    @(isEdit ? "Update" : "Create")
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    Back
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
