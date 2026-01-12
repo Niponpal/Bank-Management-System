@@ -33,6 +33,12 @@
                 <textarea asp-for="Address" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+            <select asp-for="BranchName"
+                    asp-items="ViewBag.Branches"
+                    class="form-control">
+                <option value="">-- Select Branch --</option>
+            </select>
+
 
             <div class="mt-4">
                 <button type="submit" class="btn btn-success">

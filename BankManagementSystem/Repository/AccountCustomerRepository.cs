@@ -1,6 +1,5 @@
 ﻿using BankManagementSystem.Data;
 using BankManagementSystem.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankManagementSystem.Repository;
@@ -29,6 +28,9 @@ public class AccountCustomerRepository : IAccountCustomerRepository
         }
         return null!;
     }
+
+  
+
 
     public async Task<AccountCustomer?> GetAccountCustomerByIdAsync(long id, CancellationToken cancellationToken)
     {

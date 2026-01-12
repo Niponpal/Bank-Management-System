@@ -1,4 +1,5 @@
 ﻿using BankManagementSystem.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BankManagementSystem.Repository;
 
@@ -9,4 +10,5 @@ public interface IAccountCustomerRepository
     Task<AccountCustomer> AddMAccountCustomerAsync(AccountCustomer  accountCustomer, CancellationToken cancellationToken);
     Task<AccountCustomer?> UpdateAccountCustomerAsync(AccountCustomer  accountCustomer, CancellationToken cancellationToken);
     Task<AccountCustomer> DeleteAccountCustomerAsync(long id, CancellationToken cancellationToken);
+    
 }

@@ -7,9 +7,13 @@ namespace BankManagementSystem.Controllers;
 public class TransactionController : Controller
 {
     private readonly ITransactionRepository _transactionRepository;
-    public TransactionController(ITransactionRepository transactionRepository)
+
+    private readonly IAccountCustomerRepository _accountCustomerRepository;
+
+    public TransactionController(ITransactionRepository transactionRepository, IAccountCustomerRepository accountCustomerRepository)
     {
         _transactionRepository = transactionRepository;
+        _accountCustomerRepository = accountCustomerRepository;
     }
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
@@ -17,9 +21,10 @@ public class TransactionController : Controller
         return View(data);
     }
     [HttpGet]
-    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken) 
+    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken)
     {
-        if(id== 0)
+        
+        if (id== 0)
         {
             return View(new Models.Transaction());
         }

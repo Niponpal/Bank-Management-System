@@ -7,9 +7,11 @@ namespace BankManagementSystem.Controllers;
 public class BranchController : Controller
 {
     private readonly IBranchRepository _branchRepository;
-    public BranchController(IBranchRepository branchRepository)
+    private readonly IAccountCustomerRepository _accountCustomerRepository;
+    public BranchController(IBranchRepository branchRepository, IAccountCustomerRepository accountCustomerRepository)
     {
         _branchRepository = branchRepository;
+        _accountCustomerRepository = accountCustomerRepository;
     }
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
@@ -19,8 +21,10 @@ public class BranchController : Controller
     [HttpGet]
     public async Task<IActionResult> CreateOrEdit(int id,CancellationToken cancellationToken) 
     {
-        if(id== 0)
+       
+        if (id== 0)
         {
+         
             return View(new Models.Branch());
         }
         else
@@ -28,6 +32,7 @@ public class BranchController : Controller
             var data = await _branchRepository.GetBranchByIdAsync(id,cancellationToken);
             if(data != null)
             {
+               
                 return View(data);
                
             }
@@ -37,15 +42,17 @@ public class BranchController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateOrEdit(Models.Branch branch,CancellationToken cancellationToken)
     {
-      
-            if(branch.Id == 0)
-            {
-                await _branchRepository.AddBranchAsync(branch,cancellationToken);
+
+       
+        if (branch.Id == 0)
+        {
+           
+            await _branchRepository.AddBranchAsync(branch,cancellationToken);
                 return RedirectToAction(nameof(Index));
             }
             else
-            {
-                await _branchRepository.UpdateBranchAsync(branch,cancellationToken);
+        { 
+            await _branchRepository.UpdateBranchAsync(branch,cancellationToken);
                 return RedirectToAction(nameof(Index));
             }
     }

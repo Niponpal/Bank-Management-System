@@ -7,24 +7,30 @@ namespace BankManagementSystem.Controllers;
 public class AccountCustomerController : Controller
 {
     private readonly IAccountCustomerRepository _accountCustomerRepository;
-    public AccountCustomerController(IAccountCustomerRepository accountCustomerRepository)
+    private readonly IBranchRepository _branchRepository;  
+    public AccountCustomerController(IAccountCustomerRepository accountCustomerRepository, IBranchRepository branchRepository)
     {
         _accountCustomerRepository = accountCustomerRepository;
+        _branchRepository = branchRepository;
     }
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
+     
         var data = await _accountCustomerRepository.GetAllAccountCustomerAsync(cancellationToken);
         return View(data);
     }
     [HttpGet]
-    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken) 
+    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken)
     {
-        if(id== 0)
+        ViewData["BranchId"] = await _branchRepository.DropdownAsync(cancellationToken);
+        if (id== 0)
         {
+          
             return View(new Models.AccountCustomer());
         }
         else
         {
+          
             var data = await _accountCustomerRepository.GetAccountCustomerByIdAsync(id,cancellationToken);
             if(data != null)
             {
@@ -37,15 +43,18 @@ public class AccountCustomerController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateOrEdit(Models.AccountCustomer accountCustomer,CancellationToken cancellationToken)
     {
-      
-            if(accountCustomer.Id == 0)
-            {
-                await _accountCustomerRepository.AddMAccountCustomerAsync(accountCustomer,cancellationToken);
+        ViewData["BranchId"] = await _branchRepository.DropdownAsync(cancellationToken);
+
+        if (accountCustomer.Id == 0)
+        {
+            
+            await _accountCustomerRepository.AddMAccountCustomerAsync(accountCustomer,cancellationToken);
                 return RedirectToAction(nameof(Index));
             }
             else
-            {
-                await _accountCustomerRepository.UpdateAccountCustomerAsync(accountCustomer,cancellationToken);
+        {
+           
+            await _accountCustomerRepository.UpdateAccountCustomerAsync(accountCustomer,cancellationToken);
                 return RedirectToAction(nameof(Index));
             }  
     }
