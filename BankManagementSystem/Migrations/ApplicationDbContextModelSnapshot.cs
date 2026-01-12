@@ -129,7 +129,7 @@ namespace BankManagementSystem.Migrations
                     b.HasOne("BankManagementSystem.Models.Branch", "Branch")
                         .WithMany("AccountCustomers")
                         .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Branch");
