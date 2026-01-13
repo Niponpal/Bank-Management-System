@@ -14,14 +14,14 @@ public class AccountCustomerRepository : IAccountCustomerRepository
     }
     public async Task<AccountCustomer> AddMAccountCustomerAsync(AccountCustomer accountCustomer, CancellationToken cancellationToken)
     {
-           await _context.AccountCustomers.AddAsync(accountCustomer, cancellationToken);
-           await  _context.SaveChangesAsync(cancellationToken);
-           return accountCustomer;
+        await _context.AccountCustomers.AddAsync(accountCustomer, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return accountCustomer;
     }
 
     public async Task<AccountCustomer> DeleteAccountCustomerAsync(long id, CancellationToken cancellationToken)
     {
-      var data = await _context.AccountCustomers.FindAsync(id,cancellationToken);
+        var data = await _context.AccountCustomers.FindAsync(id, cancellationToken);
         if (data != null)
         {
             _context.AccountCustomers.Remove(data);
@@ -43,10 +43,10 @@ public class AccountCustomerRepository : IAccountCustomerRepository
 
     public async Task<AccountCustomer?> GetAccountCustomerByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var data = await _context.AccountCustomers.FindAsync(id,cancellationToken);
+        var data = await _context.AccountCustomers.FindAsync(id, cancellationToken);
         if (data != null)
         {
-           return data;
+            return data;
         }
         return null;
     }
@@ -56,14 +56,14 @@ public class AccountCustomerRepository : IAccountCustomerRepository
         var data = await _context.AccountCustomers.ToListAsync(cancellationToken);
         if (data != null)
         {
-           return data;
+            return data;
         }
-      return Enumerable.Empty<AccountCustomer>();
+        return Enumerable.Empty<AccountCustomer>();
     }
 
     public async Task<AccountCustomer?> UpdateAccountCustomerAsync(AccountCustomer accountCustomer, CancellationToken cancellationToken)
     {
-        var data = await _context.AccountCustomers.FindAsync(accountCustomer.Id,cancellationToken);
+        var data = await _context.AccountCustomers.FindAsync(accountCustomer.Id, cancellationToken);
         if (data != null)
         {
             data.AccountNumber = accountCustomer.AccountNumber;
