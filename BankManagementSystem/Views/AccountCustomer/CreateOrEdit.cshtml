@@ -47,14 +47,14 @@
         </div>
 
         <!-- Branch -->
-        <div class="col-md-6 mb-3">
-            <label asp-for="BranchId" class="form-label"></label>
-            <select asp-for="BranchId" class="form-select"
-                    asp-items="ViewBag.Branches">
-                <option value="">-- Select Branch --</option>
-            </select>
-            <span asp-validation-for="BranchId" class="text-danger"></span>
-        </div>
+     <!-- Branch -->
+        <select asp-for="BranchId"
+                class="form-select"
+                asp-items="@(ViewBag.BranchId)">
+            <option value="">-- Select Branch --</option>
+        </select>
+
+     
 
         <!-- Is Active -->
         <div class="col-md-6 mb-3">

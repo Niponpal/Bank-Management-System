@@ -22,11 +22,10 @@ public class BranchRepository : IBranchRepository
 
     public async Task<IEnumerable<SelectListItem>> DropdownAsync(CancellationToken cancellationToken)
     {
-        return await _context.AccountCustomers
-            .Where(x => x.IsActive)
+        return await _context.Branches
             .Select(x => new SelectListItem
             {
-                Text = x.FullName,
+                Text = x.BranchName,
                 Value = x.Id.ToString()
             })
             .ToListAsync(cancellationToken);
