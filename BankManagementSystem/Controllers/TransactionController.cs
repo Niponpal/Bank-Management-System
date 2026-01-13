@@ -23,7 +23,7 @@ public class TransactionController : Controller
     [HttpGet]
     public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken)
     {
-        
+        ViewData["AccountCustomerId"] = await _accountCustomerRepository.DropdownAsync(cancellationToken);
         if (id== 0)
         {
             return View(new Models.Transaction());
@@ -42,8 +42,8 @@ public class TransactionController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateOrEdit(Models.Transaction transaction,CancellationToken cancellationToken)
     {
-      
-            if(transaction.Id == 0)
+        ViewData["AccountCustomerId"] = await _accountCustomerRepository.DropdownAsync(cancellationToken);
+        if (transaction.Id == 0)
             {
                 await _transactionRepository.AddMTransactionAsync(transaction,cancellationToken);
                 return RedirectToAction(nameof(Index));

@@ -10,5 +10,6 @@ public interface IAccountCustomerRepository
     Task<AccountCustomer> AddMAccountCustomerAsync(AccountCustomer  accountCustomer, CancellationToken cancellationToken);
     Task<AccountCustomer?> UpdateAccountCustomerAsync(AccountCustomer  accountCustomer, CancellationToken cancellationToken);
     Task<AccountCustomer> DeleteAccountCustomerAsync(long id, CancellationToken cancellationToken);
-    
+    Task<IEnumerable<SelectListItem>> DropdownAsync(CancellationToken cancellationToken);
+
 }

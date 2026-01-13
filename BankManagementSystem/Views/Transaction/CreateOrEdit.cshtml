@@ -3,10 +3,7 @@
 <h3>Create Transaction</h3>
 
 <form asp-action="CreateOrEdit" method="post">
-    <div class="mb-3">
-        <label>Account Customer ID</label>
-        <input asp-for="AccountCustomerId" class="form-control" />
-    </div>
+
 
     <div class="mb-3">
         <label>Amount</label>
@@ -21,6 +18,12 @@
             <option value="3">Transfer</option>
         </select>
     </div>
+
+    <select asp-for="AccountCustomerId"
+            asp-items="ViewBag.AccountCustomerId"
+            class="form-control">
+        <option value="">-- Select Branch --</option>
+    </select>
 
     <div class="mb-3">
         <label>Reference</label>

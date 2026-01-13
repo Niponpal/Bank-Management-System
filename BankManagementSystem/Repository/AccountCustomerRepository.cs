@@ -1,5 +1,6 @@
 ﻿using BankManagementSystem.Data;
 using BankManagementSystem.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankManagementSystem.Repository;
@@ -29,8 +30,16 @@ public class AccountCustomerRepository : IAccountCustomerRepository
         return null!;
     }
 
-  
-
+    public async Task<IEnumerable<SelectListItem>> DropdownAsync(CancellationToken cancellationToken)
+    {
+        return await _context.AccountCustomers
+            .Select(x => new SelectListItem
+            {
+                Text = x.FullName,
+                Value = x.Id.ToString()
+            })
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task<AccountCustomer?> GetAccountCustomerByIdAsync(long id, CancellationToken cancellationToken)
     {
