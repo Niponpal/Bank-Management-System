@@ -1,4 +1,223 @@
-﻿@{
+﻿@* 
+
+
+   <!-- Main Content -->
+<div class="main-content">
+    <!-- Top Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-4">
+            <button class="btn btn-link p-0 fs-3 d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <h3 class="mb-0 fw-bold">Dashboard</h3>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="input-group input-group-sm" style="width: 240px;">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search...">
+            </div>
+            <button class="btn btn-link position-relative p-0">
+                <i class="bi bi-bell fs-5"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4</span>
+            </button>
+            <button class="btn btn-link p-0" id="themeToggle">
+                <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+            </button>
+            <div class="dropdown">
+                <a class="d-flex align-items-center gap-3 text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <div class="fw-medium">Admin</div>
+                        <small class="text-muted">admin@bank.bd</small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date & Time -->
+    <div class="text-muted mb-4" id="currentDateTime"></div>
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-lg-6">
+            <div class="stat-card p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small">Total Customers</p>
+                        <h4 class="fw-bold mb-1">28,741</h4>
+                        <small class="text-success"><i class="bi bi-arrow-up"></i> 12.4%</small>
+                    </div>
+                    <i class="bi bi-people fs-3 text-primary opacity-75"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="stat-card p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small">Active Accounts</p>
+                        <h4 class="fw-bold mb-1">47,392</h4>
+                        <small class="text-success"><i class="bi bi-arrow-up"></i> 9.8%</small>
+                    </div>
+                    <i class="bi bi-wallet2 fs-3 text-success opacity-75"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="stat-card p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small">Monthly Transactions</p>
+                        <h4 class="fw-bold mb-1">1.87M</h4>
+                        <small class="text-warning"><i class="bi bi-arrow-up"></i> 18.6%</small>
+                    </div>
+                    <i class="bi bi-arrow-left-right fs-3 text-warning opacity-75"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="stat-card p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small">Total Assets</p>
+                        <h4 class="fw-bold mb-1">৳ 4,128.9 Cr</h4>
+                        <small class="text-info"><i class="bi bi-arrow-up"></i> 14.2%</small>
+                    </div>
+                    <i class="bi bi-currency-dollar fs-3 text-info opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Cards -->
+    <div class="row g-4">
+        <!-- Recent Transactions -->
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Recent Transactions</h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Account</th>
+                                <th>Customer</th>
+                                <th>Type</th>
+                                <th class="text-end">Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>13 Jan 2026</td>
+                                <td>ACC-784512</td>
+                                <td>Rahim Khan</td>
+                                <td>Transfer</td>
+                                <td class="text-end text-success fw-medium">+৳ 1,25,000</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>13 Jan 2026</td>
+                                <td>ACC-219876</td>
+                                <td>Sabrina Akter</td>
+                                <td>Withdrawal</td>
+                                <td class="text-end text-danger fw-medium">-৳ 45,000</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>12 Jan 2026</td>
+                                <td>ACC-547821</td>
+                                <td>Md. Karim Hossain</td>
+                                <td>Deposit</td>
+                                <td class="text-end text-success fw-medium">+৳ 3,50,000</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="dashboard-card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Quick Actions</h5>
+                </div>
+                <div class="p-4">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100 py-3">
+                                <i class="bi bi-person-plus me-2"></i>New Customer
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-success w-100 py-3">
+                                <i class="bi bi-plus-circle me-2"></i>Open Account
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-warning w-100 py-3">
+                                <i class="bi bi-arrow-left-right me-2"></i>Transfer
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-info w-100 py-3">
+                                <i class="bi bi-building-add me-2"></i>New Branch
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Performance -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h5 class="card-title">Branch Performance</h5>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span>Dhanmondi</span><span>78%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span>Uttara</span><span>62%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: 62%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span>Mirpur</span><span>45%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ *@
+
+
+
+@{
     Layout = null;
 }
 
@@ -182,21 +401,18 @@
         }
 
         @@media (max-width: 992px) {
-            .sidebar
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px !important;
+            }
 
-        {
-            transform: translateX(-100%);
-            width: 280px !important;
-        }
+            .main-content {
+                margin-left: 0;
+            }
 
-        .main-content {
-            margin-left: 0;
-        }
-
-        .sidebar.show {
-            transform: translateX(0);
-        }
-
+            .sidebar.show {
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -511,4 +727,4 @@
         setInterval(updateDateTime, 60000);
     </script>
 </body>
-</html>
+</html> 
