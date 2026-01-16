@@ -2,104 +2,215 @@
 
 @{
     ViewData["Title"] = "Transaction Details";
+
+    var transactionColor = Model.TransactionType == 1 ? "success" :
+                           Model.TransactionType == 2 ? "danger" : "info";
+
+    var transactionIcon = Model.TransactionType == 1 ? "arrow-down-circle" :
+                          Model.TransactionType == 2 ? "arrow-up-circle" : "arrow-left-right";
+
+    var typeText = Model.TransactionType == 1 ? "Deposit" :
+                   Model.TransactionType == 2 ? "Withdrawal" : "Transfer";
 }
 
-<h2 class="mb-3">Transaction Details</h2>
+<!-- =================== Hidden Data =================== -->
+<div id="transactionData"
+     data-id="@Model.Id"
+     data-amount="@Model.Amount"
+     data-type-text="@typeText"
+     data-date="@Model.CreatedAt.ToString("dd MMMM yyyy")"
+     data-time="@Model.CreatedAt.ToString("hh:mm tt")"
+     data-full-date="@Model.CreatedAt.ToString("dd MMMM yyyy hh:mm tt")"
+     data-customer-name="@Model.AccountCustomer?.FullName"
+     data-account-number="@Model.AccountCustomer?.AccountNumber"
+     data-balance="@Model.AccountCustomer?.Balance"
+     style="display:none">
+</div>
 
-<div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-        <strong>Transaction Information</strong>
+<div class="container-fluid">
+
+    <!-- =================== HEADER =================== -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-2">Transaction Details</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Transactions</a></li>
+                <li class="breadcrumb-item active">Transaction #@Model.Id</li>
+            </ol>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <button class="btn btn-outline-primary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print
+            </button>
+        </div>
     </div>
 
-    <div class="card-body">
-        <table class="table table-bordered">
-            <tr>
-                <th style="width:30%">Transaction ID</th>
-                <td>@Model.Id</td>
-            </tr>
+    <div class="row">
 
-            <tr>
-                <th>Transaction Type</th>
-                <td>
-                    @if (Model.TransactionType == 1)
-                    {
-                        <span class="badge bg-success">Deposit</span>
-                    }
-                    else if (Model.TransactionType == 2)
-                    {
-                        <span class="badge bg-danger">Withdrawal</span>
-                    }
-                    else if (Model.TransactionType == 3)
-                    {
-                        <span class="badge bg-info">Transfer</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">Unknown</span>
-                    }
-                </td>
-            </tr>
+        <!-- =================== LEFT CARD =================== -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="rounded-circle bg-@transactionColor bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width:80px;height:80px">
+                        <i class="bi bi-@transactionIcon fs-1 text-@transactionColor"></i>
+                    </div>
 
-            <tr>
-                <th>Amount</th>
-                <td>@Model.Amount.ToString("0.00")</td>
-            </tr>
+                    <h3 class="fw-bold">@Model.Amount.ToString("C")</h3>
 
-            <tr>
-                <th>Reference</th>
-                <td>@(string.IsNullOrEmpty(Model.Reference) ? "N/A" : Model.Reference)</td>
-            </tr>
+                    <span class="badge bg-@transactionColor bg-opacity-10 text-@transactionColor px-3 py-2">
+                        <i class="bi bi-@transactionIcon"></i> @typeText
+                    </span>
 
-            <tr>
-                <th>Date</th>
-                <td>@Model.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
-            </tr>
-        </table>
+                    <p class="text-muted mt-2">Transaction #@Model.Id</p>
 
-        <hr />
+                    <hr />
 
-        <h5>Account Information</h5>
+                    <div class="d-flex justify-content-between">
+                        <span>Date</span>
+                        <strong>@Model.CreatedAt.ToString("dd MMM yyyy")</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Time</span>
+                        <strong>@Model.CreatedAt.ToString("hh:mm tt")</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Status</span>
+                        <span class="badge bg-success">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <table class="table table-bordered">
-            <tr>
-                <th style="width:30%">Account Number</th>
-                <td>@Model.AccountCustomer?.AccountNumber ?? "N/A"</td>
-            </tr>
+        <!-- =================== RIGHT CARD =================== -->
+        <div class="col-lg-8">
 
-            <tr>
-                <th>Customer Name</th>
-                <td>@Model.AccountCustomer?.FullName ?? "N/A"</td>
-            </tr>
+            <!-- Transaction Info -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">
+                    <i class="bi bi-receipt text-primary"></i> Transaction Information
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Transaction ID</label>
+                        <div class="fw-bold fs-5">#@Model.Id</div>
+                    </div>
 
-            <tr>
-                <th>Phone</th>
-                <td>@Model.AccountCustomer?.Phone ?? "N/A"</td>
-            </tr>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Type</label><br />
+                        <span class="badge bg-@transactionColor">@typeText</span>
+                    </div>
 
-            <tr>
-                <th>NID</th>
-                <td>@Model.AccountCustomer?.NID ?? "N/A"</td>
-            </tr>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Amount</label>
+                        <div class="fw-bold fs-4 @(Model.TransactionType == 1 ? "text-success" : "text-danger")">
+                            @Model.Amount.ToString("C")
+                        </div>
+                    </div>
 
-            <tr>
-                <th>Current Balance</th>
-                <td>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Date & Time</label>
+                        <div>@Model.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Info -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">
+                    <i class="bi bi-person-circle text-primary"></i> Account Information
+                </div>
+
+                <div class="card-body">
                     @if (Model.AccountCustomer != null)
                     {
-                        @Model.AccountCustomer.Balance.ToString("0.00")
+                        <p><b>Name:</b> @Model.AccountCustomer.FullName</p>
+                        <p><b>Account No:</b> @Model.AccountCustomer.AccountNumber</p>
+                        <p><b>Balance:</b> @Model.AccountCustomer.Balance.ToString("C")</p>
+                        <p><b>Phone:</b> @Model.AccountCustomer.Phone</p>
+                        <p><b>NID:</b> @Model.AccountCustomer.NID</p>
                     }
                     else
                     {
-                        <span>N/A</span>
+                        <p class="text-muted">Account information not available</p>
                     }
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="card-footer">
-        <a asp-action="Index" class="btn btn-secondary">
-            Back to List
-        </a>
+    <!-- =================== ACTION BUTTONS =================== -->
+    <div class="mt-4 d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-primary" onclick="printReceipt()">
+            <i class="bi bi-receipt"></i> Download Receipt
+        </button>
+        <button class="btn btn-primary" onclick="shareTransaction()">
+            <i class="bi bi-share"></i> Share
+        </button>
     </div>
+
 </div>
+
+<!-- =================== CSS =================== -->
+<style>
+    @@media print {
+        .btn, .breadcrumb
+
+    {
+        display: none !important
+    }
+
+    }
+</style>
+
+<!-- =================== JS =================== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+        function getData() {
+            return document.getElementById('transactionData').dataset;
+        }
+
+        function printReceipt() {
+            const d = getData();
+            const win = window.open('', '_blank');
+            if (!win) return alert('Popup blocked');
+
+            win.document.write(`
+            <h3>Bank Management System</h3>
+            <p>Transaction #${d.id}</p>
+            <p>Type: ${d.typeText}</p>
+            <p>Amount: $${parseFloat(d.amount).toFixed(2)}</p>
+            <p>Date: ${d.fullDate}</p>
+            <hr>
+            <p>Account: ${d.accountNumber}</p>
+            <p>Balance: $${parseFloat(d.balance||0).toFixed(2)}</p>
+            `);
+
+            win.print();
+        }
+
+        function shareTransaction() {
+            const d = getData();
+            const text =
+    `Transaction #${d.id}
+    Amount: $${parseFloat(d.amount).toFixed(2)}
+    Type: ${d.typeText}
+    Date: ${d.fullDate}`;
+
+            if (navigator.share) {
+                navigator.share({ title: 'Transaction', text });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('Copied to clipboard');
+            }
+        }
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
