@@ -7,39 +7,42 @@
 
 <div class="container-fluid">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
         <div>
-            <h2 class="fw-bold text-primary mb-2">@(isEdit ? "Edit Transaction" : "Create New Transaction")</h2>
+            <h2 class="fw-bold mb-1">@(isEdit ? "Edit Transaction" : "Create New Transaction")</h2>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
                     <li class="breadcrumb-item"><a asp-action="Index">Transactions</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@(isEdit ? "Edit" : "Create")</li>
                 </ol>
             </nav>
         </div>
-
-        <div>
-            <a asp-action="Index" class="btn btn-outline-secondary d-flex align-items-center gap-2">
-                <i class="bi bi-arrow-left"></i>
-                Back to List
-            </a>
-        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i>
+            Back to List
+        </a>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-6">
-            <!-- Transaction Form Card -->
-            <div class="card shadow border-0">
-                <div class="card-header bg-primary bg-gradient text-white py-3">
-                    <h5 class="mb-0">
+        <div class="col-lg-8 col-xl-7">
+            <!-- Main Form Card -->
+            <div class="dashboard-card shadow">
+                <div class="card-header d-flex justify-content-between align-items-center bg-gradient-primary-soft">
+                    <h5 class="card-title mb-0">
                         <i class="bi bi-receipt me-2"></i>
                         Transaction Details
                     </h5>
+                    @if (isEdit)
+                    {
+                        <small class="text-muted">
+                            ID: @Model.Id • @Model.CreatedAt.ToString("dd-MMM-yyyy hh:mm tt")
+                        </small>
+                    }
                 </div>
 
-                <div class="card-body p-4">
-                    <form asp-action="CreateOrEdit" method="post" id="transactionForm" class="needs-validation" novalidate>
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="CreateOrEdit" method="post" class="needs-validation" novalidate>
                         @Html.AntiForgeryToken()
 
                         @if (isEdit)
@@ -48,8 +51,8 @@
                             <input type="hidden" asp-for="CreatedAt" />
                         }
 
-                        <!-- Transaction Type Selection -->
-                        <div class="mb-4">
+                        <!-- Transaction Type -->
+                        <div class="mb-5">
                             <label class="form-label fw-bold mb-3">
                                 <i class="bi bi-arrow-left-right me-2"></i>
                                 Transaction Type
@@ -58,166 +61,111 @@
                                 <div class="col-md-4">
                                     <input type="radio" class="btn-check" name="TransactionType" id="typeDeposit" value="1"
                                            asp-for="TransactionType" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100 py-3" for="typeDeposit">
-                                        <i class="bi bi-arrow-down-circle fs-4 d-block mb-2"></i>
+                                    <label class="btn btn-outline-success w-100 py-4 text-center" for="typeDeposit">
+                                        <i class="bi bi-arrow-down-circle fs-3 mb-2 d-block"></i>
                                         <span class="fw-bold">Deposit</span>
                                     </label>
                                 </div>
-
                                 <div class="col-md-4">
                                     <input type="radio" class="btn-check" name="TransactionType" id="typeWithdrawal" value="2"
                                            asp-for="TransactionType" autocomplete="off">
-                                    <label class="btn btn-outline-danger w-100 py-3" for="typeWithdrawal">
-                                        <i class="bi bi-arrow-up-circle fs-4 d-block mb-2"></i>
+                                    <label class="btn btn-outline-danger w-100 py-4 text-center" for="typeWithdrawal">
+                                        <i class="bi bi-arrow-up-circle fs-3 mb-2 d-block"></i>
                                         <span class="fw-bold">Withdrawal</span>
                                     </label>
                                 </div>
-
                                 <div class="col-md-4">
                                     <input type="radio" class="btn-check" name="TransactionType" id="typeTransfer" value="3"
                                            asp-for="TransactionType" autocomplete="off">
-                                    <label class="btn btn-outline-info w-100 py-3" for="typeTransfer">
-                                        <i class="bi bi-arrow-left-right fs-4 d-block mb-2"></i>
+                                    <label class="btn btn-outline-info w-100 py-4 text-center" for="typeTransfer">
+                                        <i class="bi bi-arrow-left-right fs-3 mb-2 d-block"></i>
                                         <span class="fw-bold">Transfer</span>
                                     </label>
                                 </div>
                             </div>
-                            <span asp-validation-for="TransactionType" class="text-danger small"></span>
+                            <span asp-validation-for="TransactionType" class="text-danger small d-block mt-2"></span>
                         </div>
 
                         <!-- Account Selection -->
-                        <div class="mb-4">
+                        <div class="mb-5">
                             <label asp-for="AccountCustomerId" class="form-label fw-bold">
                                 <i class="bi bi-person-circle me-2"></i>
                                 Select Account
                             </label>
+                            <select asp-for="AccountCustomerId"
+                                    asp-items="ViewBag.AccountCustomerId"
+                                    class="form-select form-select-lg"
+                                    id="accountSelect"
+                                    required>
+                                <option value="">-- Choose Customer Account --</option>
+                            </select>
+                            <span asp-validation-for="AccountCustomerId" class="text-danger small d-block mt-2"></span>
 
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <select asp-for="AccountCustomerId"
-                                        asp-items="ViewBag.AccountCustomerId"
-                                        class="form-select form-select-lg"
-                                        id="accountSelect">
-                                    <option value="">-- Select Customer Account --</option>
-                                </select>
-                            </div>
-                            <div class="form-text">
-                                Select the customer account for this transaction
-                            </div>
-                            <span asp-validation-for="AccountCustomerId" class="text-danger small"></span>
-
-                            <!-- Selected Account Preview -->
-                            <div id="accountPreview" class="mt-3 p-3 border rounded bg-light" style="display: none;">
+                            <!-- Account Preview -->
+                            <div id="accountPreview" class="mt-4 p-4 border rounded bg-gradient-primary-soft" style="display: none;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="mb-1" id="accountName">Customer Name</h6>
-                                        <small class="text-muted" id="accountNumber">Account Number</small>
+                                        <h6 class="mb-1 fw-bold" id="accountName">Customer Name</h6>
+                                        <small class="text-muted d-block" id="accountNumber">Account Number</small>
                                     </div>
                                     <div class="text-end">
-                                        <small class="text-muted d-block">Current Balance</small>
-                                        <span class="fw-bold text-primary" id="accountBalance">$0.00</span>
+                                        <small class="text-muted d-block">Balance</small>
+                                        <h6 class="fw-bold text-primary mb-0" id="accountBalance">$0.00</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Amount Input -->
-                        <div class="mb-4">
+                        <!-- Amount -->
+                        <div class="mb-5">
                             <label asp-for="Amount" class="form-label fw-bold">
                                 <i class="bi bi-currency-dollar me-2"></i>
                                 Amount
                             </label>
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text">$</span>
-                                <input asp-for="Amount"
-                                       class="form-control"
-                                       placeholder="0.00"
-                                       step="0.01"
-                                       min="0.01"
-                                       id="amountInput">
+                                <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01"
+                                       placeholder="0.00" id="amountInput" required>
                                 <span class="input-group-text">USD</span>
                             </div>
-                            <div class="form-text">
-                                Enter the transaction amount
-                            </div>
-                            <span asp-validation-for="Amount" class="text-danger small"></span>
+                            <span asp-validation-for="Amount" class="text-danger small d-block mt-2"></span>
 
-                            <!-- Quick Amount Buttons -->
-                            <div class="mt-2">
-                                <small class="text-muted me-2">Quick Select:</small>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setAmount(100)">$100</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setAmount(500)">$500</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setAmount(1000)">$1,000</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setAmount(5000)">$5,000</button>
+                            <!-- Quick Amounts -->
+                            <div class="mt-3">
+                                <small class="text-muted me-2">Quick Amounts:</small>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1" onclick="setAmount(100)">100</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1" onclick="setAmount(500)">500</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1" onclick="setAmount(1000)">1,000</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setAmount(5000)">5,000</button>
                             </div>
                         </div>
 
-                        <!-- Reference Input -->
-                        <div class="mb-4">
+                        <!-- Reference -->
+                        <div class="mb-5">
                             <label asp-for="Reference" class="form-label fw-bold">
                                 <i class="bi bi-chat-text me-2"></i>
-                                Reference / Description
+                                Reference / Note
                             </label>
-                            <textarea asp-for="Reference"
-                                      class="form-control"
-                                      rows="3"
-                                      placeholder="Enter transaction reference or description..."
-                                      maxlength="500"></textarea>
-                            <div class="form-text">
-                                Optional: Add a reference note for this transaction
-                            </div>
-                            <span asp-validation-for="Reference" class="text-danger small"></span>
+                            <textarea asp-for="Reference" class="form-control" rows="3"
+                                      placeholder="Enter transaction reference or description..." maxlength="500"></textarea>
+                            <span asp-validation-for="Reference" class="text-danger small d-block mt-2"></span>
                         </div>
 
-                        <!-- Additional Information (for edit mode) -->
-                        @if (isEdit)
-                        {
-                            <div class="mb-4">
-                                <div class="card bg-light border">
-                                    <div class="card-body">
-                                        <h6 class="card-title">
-                                            <i class="bi bi-info-circle me-2"></i>
-                                            Transaction Information
-                                        </h6>
-                                        <div class="row small">
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <span class="text-muted">Created Date:</span>
-                                                    <span class="fw-bold">@Model.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <span class="text-muted">Transaction ID:</span>
-                                                    <span class="fw-bold">@Model.Id</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
-                        <!-- Action Buttons -->
-                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between pt-4 border-top">
                             <a asp-action="Index" class="btn btn-outline-secondary d-flex align-items-center gap-2">
                                 <i class="bi bi-x-circle"></i>
                                 Cancel
                             </a>
-
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-3">
                                 @if (isEdit)
                                 {
-                                    <button type="button" class="btn btn-outline-warning d-flex align-items-center gap-2"
-                                            onclick="printReceipt()">
+                                    <button type="button" class="btn btn-outline-info d-flex align-items-center gap-2" onclick="printReceipt()">
                                         <i class="bi bi-printer"></i>
                                         Print Receipt
                                     </button>
                                 }
-
-                                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2 px-4">
+                                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2 px-5">
                                     <i class="bi bi-save"></i>
                                     @(isEdit ? "Update Transaction" : "Create Transaction")
                                 </button>
@@ -226,201 +174,59 @@
                     </form>
                 </div>
             </div>
-
-            <!-- Transaction Summary Preview -->
-            <div class="card shadow border-0 mt-4">
-                <div class="card-header bg-light py-3">
-                    <h6 class="mb-0">
-                        <i class="bi bi-eye me-2"></i>
-                        Transaction Preview
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-4 mb-3">
-                            <div class="p-3 border rounded">
-                                <small class="text-muted d-block">Type</small>
-                                <span id="previewType" class="badge bg-secondary">Select Type</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="p-3 border rounded">
-                                <small class="text-muted d-block">Amount</small>
-                                <span id="previewAmount" class="fw-bold">$0.00</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="p-3 border rounded">
-                                <small class="text-muted d-block">Status</small>
-                                <span class="badge bg-success">Pending</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-
-<style>
-    .card {
-        border-radius: 10px;
-        border: 1px solid rgba(0,0,0,.125);
-    }
-
-    .card-header {
-        border-radius: 10px 10px 0 0 !important;
-    }
-
-    .btn-check:checked + .btn-outline-success {
-        background-color: rgba(25, 135, 84, 0.1);
-        border-color: #198754;
-        color: #198754;
-    }
-
-    .btn-check:checked + .btn-outline-danger {
-        background-color: rgba(220, 53, 69, 0.1);
-        border-color: #dc3545;
-        color: #dc3545;
-    }
-
-    .btn-check:checked + .btn-outline-info {
-        background-color: rgba(13, 202, 240, 0.1);
-        border-color: #0dcaf0;
-        color: #0dcaf0;
-    }
-
-    .form-control-lg {
-        padding: 0.75rem 1rem;
-        font-size: 1.1rem;
-    }
-
-    .form-label {
-        color: #495057;
-    }
-
-    .input-group-text {
-        background-color: #f8f9fa;
-    }
-
-    #accountPreview {
-        transition: all 0.3s ease;
-    }
-
-    .shadow {
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .btn-outline-secondary:hover {
-        transform: translateY(-1px);
-    }
-</style>
-
 @section Scripts {
     <script>
-        // Form validation
-        (function () {
-            'use strict'
-
-            var forms = document.querySelectorAll('.needs-validation')
-
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-
         // Quick amount buttons
         function setAmount(amount) {
             document.getElementById('amountInput').value = amount.toFixed(2);
             updatePreview();
         }
 
-        // Update preview
+        // Real-time preview update
         function updatePreview() {
             const amount = document.getElementById('amountInput').value;
-            const transactionType = document.querySelector('input[name="TransactionType"]:checked');
+            const typeRadio = document.querySelector('input[name="TransactionType"]:checked');
 
             if (amount) {
                 document.getElementById('previewAmount').textContent = '$' + parseFloat(amount).toFixed(2);
             }
 
-            if (transactionType) {
-                const typeText = transactionType.nextElementSibling.querySelector('.fw-bold').textContent;
-                const typeColor = transactionType.value == 1 ? 'success' :
-                                transactionType.value == 2 ? 'danger' : 'info';
-
-                document.getElementById('previewType').textContent = typeText;
-                document.getElementById('previewType').className = `badge bg-${typeColor}`;
+            if (typeRadio) {
+                const label = typeRadio.nextElementSibling;
+                document.getElementById('previewType').textContent = label.querySelector('span').textContent;
+                const color = typeRadio.value == 1 ? 'success' : typeRadio.value == 2 ? 'danger' : 'info';
+                document.getElementById('previewType').className = `badge bg-${color}`;
             }
         }
 
-        // Update account preview
+        // Account preview (mock - replace with real AJAX in production)
         document.getElementById('accountSelect').addEventListener('change', function() {
             const preview = document.getElementById('accountPreview');
-            const selectedOption = this.options[this.selectedIndex];
-
             if (this.value) {
-                // In a real application, you would fetch account details via AJAX
-                // For now, we'll show the selected text
-                const accountInfo = selectedOption.text.split(' - ');
-                if (accountInfo.length >= 2) {
-                    document.getElementById('accountName').textContent = accountInfo[0];
-                    document.getElementById('accountNumber').textContent = 'Account: ' + accountInfo[1];
-                    // This would come from an API call in reality
-                    document.getElementById('accountBalance').textContent = '$1,250.00';
-                }
+                // In real app: AJAX to get account details
                 preview.style.display = 'block';
+                document.getElementById('accountName').textContent = "John Doe"; // mock
+                document.getElementById('accountNumber').textContent = "****1234";
+                document.getElementById('accountBalance').textContent = "$12,450.75";
             } else {
                 preview.style.display = 'none';
             }
         });
 
-        // Real-time preview updates
-        document.getElementById('amountInput').addEventListener('input', updatePreview);
-        document.querySelectorAll('input[name="TransactionType"]').forEach(radio => {
-            radio.addEventListener('change', updatePreview);
-        });
-
-        // Print receipt function (for edit mode)
-        function printReceipt() {
-            // In a real application, this would open a printable receipt
-            alert('Print receipt functionality would open here.');
-        }
-
-        // Format amount on blur
-        document.getElementById('amountInput').addEventListener('blur', function() {
-            if (this.value) {
-                const value = parseFloat(this.value);
-                if (!isNaN(value)) {
-                    this.value = value.toFixed(2);
-                }
-            }
-        });
-
-        // Initialize
+        // Form validation + preview
         document.addEventListener('DOMContentLoaded', function() {
             updatePreview();
-
-            // Set focus to first input
-            const firstRadio = document.querySelector('input[name="TransactionType"]');
-            if (firstRadio) {
-                firstRadio.focus();
-            }
+            document.querySelectorAll('input[name="TransactionType"], #amountInput')
+                .forEach(el => el.addEventListener('change', updatePreview));
         });
-    </script>
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+        // Print receipt (mock)
+        function printReceipt() {
+            alert('Receipt printing would open here in real application');
+        }
+    </script>
 }
