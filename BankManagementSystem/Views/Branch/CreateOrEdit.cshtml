@@ -5,211 +5,155 @@
     ViewData["Title"] = isEdit ? "Edit Branch" : "Create New Branch";
 }
 
-<div class="container-fluid py-5 bg-light min-vh-100">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb bg-transparent p-0">
-            <li class="breadcrumb-item">
-                <a asp-action="Index" class="text-decoration-none text-primary">
-                    <i class="bi bi-buildings me-1"></i>Branches
-                </a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
-        </ol>
-    </nav>
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+    <div>
+        <h2 class="fw-bold mb-1">@ViewData["Title"]</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Branches</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@(isEdit ? "Edit" : "Create")</li>
+            </ol>
+        </nav>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary shadow-sm d-flex align-items-center gap-2">
+        <i class="bi bi-arrow-left"></i>
+        Back to List
+    </a>
+</div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-7">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <!-- Header -->
-                <div class="card-header bg-dark text-white py-5 px-5 position-relative">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-white bg-opacity-10 p-3 rounded-circle me-4">
-                                <i class="bi bi-building fs-3"></i>
-                            </div>
-                            <div>
-                                <h2 class="h3 fw-bold mb-1">@ViewData["Title"]</h2>
-                                <p class="mb-0 text-white-75 small">
-                                    @(isEdit
-                                                                        ? $"Last modified: {Model?.CreatedAt.ToString("dd MMM yyyy") ?? "—"}"
-                                                                        : $"New branch registration • {DateTime.Now:dd MMM yyyy}")
-                                </p>
-                            </div>
-                        </div>
-
-                        @if (isEdit)
-                        {
-                            <div>
-                                <span class="badge bg-light text-dark px-3 py-2 fs-6">
-                                    Branch ID: @Model.Id.ToString("D4")
-                                </span>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <!-- Form Body -->
-                <div class="card-body p-5 bg-white">
-                    <form asp-action="CreateOrEdit" method="post" class="needs-validation" novalidate>
-                        <input type="hidden" asp-for="Id" />
-
-                        <div class="row g-4">
-                            <!-- Basic Information -->
-                            <div class="col-12">
-                                <h5 class="fw-semibold text-dark mb-4 pb-2 border-bottom">
-                                    <i class="bi bi-fingerprint me-2 text-primary"></i>
-                                    Basic Information
-                                </h5>
-
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input asp-for="BranchCode"
-                                                   class="form-control form-control-lg border-primary border-start-4"
-                                                   placeholder=" "
-                                                   required
-                                                   maxlength="20"
-                                                   pattern="[A-Za-z0-9\-]{3,20}"
-                                                   title="3–20 characters (letters, numbers, hyphens)" />
-                                            <label asp-for="BranchCode">
-                                                Branch Code <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="form-text text-muted mt-1 small">
-                                                Unique identifier (e.g. BR-001, DHK-MAIN)
-                                            </div>
-                                            <span asp-validation-for="BranchCode" class="text-danger small d-block mt-1"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input asp-for="BranchName"
-                                                   class="form-control form-control-lg border-primary border-start-4"
-                                                   placeholder=" "
-                                                   required />
-                                            <label asp-for="BranchName">
-                                                Branch Name <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="form-text text-muted mt-1 small">
-                                                Official name as displayed in the system
-                                            </div>
-                                            <span asp-validation-for="BranchName" class="text-danger small d-block mt-1"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Address -->
-                            <div class="col-12">
-                                <h5 class="fw-semibold text-dark mb-4 pb-2 border-bottom">
-                                    <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
-                                    Location Details
-                                </h5>
-
-                                <div class="form-floating">
-                                    <textarea asp-for="Address"
-                                              class="form-control form-control-lg border-primary border-start-4"
-                                              placeholder=" "
-                                              style="height: 140px; resize: vertical;"
-                                              required></textarea>
-                                    <label asp-for="Address">
-                                        Full Address <span class="text-danger">*</span>
-                                    </label>
-                                    <div class="form-text text-muted mt-1 small">
-                                        Street, City, Division/State, Postal Code
-                                    </div>
-                                    <span asp-validation-for="Address" class="text-danger small d-block mt-1"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-5 pt-5 border-top">
-                            <a asp-action="Index"
-                               class="btn btn-outline-secondary btn-lg px-5 order-2 order-sm-1">
-                                <i class="bi bi-arrow-left-circle me-2"></i>
-                                Cancel
-                            </a>
-
-                            <button type="submit"
-                                    class="btn btn-primary btn-lg px-5 shadow order-1 order-sm-2">
-                                <i class="bi bi-check2-circle me-2"></i>
-                                @(isEdit ? "Save Changes" : "Create Branch")
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Footer -->
-                <div class="card-footer bg-light border-0 py-4 px-5 text-center text-muted small">
-                    <i class="bi bi-shield-check text-success me-1"></i>
-                    All data is securely stored • Required fields are marked with *
-                </div>
-            </div>
+<!-- Main Form Card -->
+<div class="dashboard-card shadow overflow-hidden">
+    <!-- Card Header -->
+    <div class="card-header bg-gradient-primary-soft d-flex align-items-center gap-3 py-4">
+        <div class="bg-white bg-opacity-25 rounded-circle p-3">
+            <i class="bi bi-building fs-4"></i>
+        </div>
+        <div>
+            <h5 class="card-title mb-0 fw-semibold">Branch Information</h5>
+            <small class="opacity-75">* Required fields</small>
         </div>
     </div>
+
+    <!-- Card Body -->
+    <div class="card-body p-5">
+        <form asp-action="CreateOrEdit" method="post" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+
+            @if (isEdit)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+
+            <div class="row g-4">
+                <!-- Branch Code -->
+                <div class="col-md-6">
+                    <label asp-for="BranchCode" class="form-label fw-semibold required">Branch Code</label>
+                    <input asp-for="BranchCode" class="form-control form-control-lg shadow-sm"
+                           placeholder="e.g. BR-001 or DHK-MAIN" required maxlength="20" />
+                    <small class="text-muted">Unique identifier for the branch</small>
+                    <span asp-validation-for="BranchCode" class="text-danger small d-block mt-1"></span>
+                </div>
+
+                <!-- Branch Name -->
+                <div class="col-md-6">
+                    <label asp-for="BranchName" class="form-label fw-semibold required">Branch Name</label>
+                    <input asp-for="BranchName" class="form-control form-control-lg shadow-sm"
+                           placeholder="e.g. Dhanmondi Main Branch" required />
+                    <small class="text-muted">Official name as displayed</small>
+                    <span asp-validation-for="BranchName" class="text-danger small d-block mt-1"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label fw-semibold required">Full Address</label>
+                    <textarea asp-for="Address" class="form-control shadow-sm" rows="4"
+                              placeholder="Street, City, Division/State, Postal Code" required></textarea>
+                    <small class="text-muted">Complete branch location</small>
+                    <span asp-validation-for="Address" class="text-danger small d-block mt-1"></span>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-5 pt-4 border-top d-flex gap-3 flex-wrap justify-content-end">
+                <a asp-action="Index" class="btn btn-outline-secondary px-5 py-2 shadow-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-x-circle"></i>
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-check2-circle"></i>
+                    @(isEdit ? "Update Branch" : "Create Branch")
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Styles {
+    <style>
+        .bg-gradient-primary-soft {
+            background: linear-gradient(135deg, rgba(51,102,255,0.06) 0%, transparent 100%);
+        }
+
+        .dashboard-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+            .dashboard-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+            }
+
+        .form-control-lg, .form-select-lg {
+            padding: 0.75rem 1.25rem;
+            font-size: 1.1rem;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+        }
+
+        .btn.shadow-sm:hover {
+            transform: translateY(-1px);
+            transition: transform 0.2s ease;
+        }
+
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+    </style>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script>
         (function () {
-            'use strict'
-
-            // Bootstrap 5 form validation
-            const forms = document.querySelectorAll('.needs-validation')
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
                     if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
+                        event.preventDefault();
+                        event.stopPropagation();
                     }
-                    form.classList.add('was-validated')
-                }, false)
-            })
+                    form.classList.add('was-validated');
+                }, false);
+            });
 
-            // Real-time branch code formatting & validation hint
-            const codeInput = document.querySelector('[asp-for="BranchCode"]')
+            // Auto uppercase & clean branch code
+            const codeInput = document.querySelector('[asp-for="BranchCode"]');
             if (codeInput) {
                 codeInput.addEventListener('input', function () {
                     this.value = this.value
                         .toUpperCase()
                         .replace(/\s+/g, '-')
-                        .replace(/[^A-Z0-9-]/g, '')
-                })
+                        .replace(/[^A-Z0-9-]/g, '');
+                });
             }
-        })()
+        })();
     </script>
-}
-
-@section Styles {
-    <style>
-        .border-start-4 {
-            border-left-width: 4px !important;
-        }
-
-        .form-control:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-        }
-
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            color: #0d6efd;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(13, 110, 253, 0.25);
-            }
-    </style>
 }
