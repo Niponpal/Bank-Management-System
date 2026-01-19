@@ -1,26 +1,316 @@
-﻿@* @{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BankManagement</title>
+    <title>BankManagement • @ViewData["Title"]</title>
 
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Your custom styles (you can move this to wwwroot/css/site.css later) -->
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 80px;
+            --primary: #3366ff;
+            --sidebar-bg: #0d1429;
+            --card-bg: #111827;
+            --hover-bg: rgba(51,102,255,0.11);
+            --border: #1e293b;
+            --text-muted: #94a3b8;
+            --text: #f1f5f9;
+            --body-bg: #0d1429;
+        }
+
+        [data-bs-theme="light"] {
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-muted: #475569;
+            --text: #0f172a;
+            --hover-bg: rgba(51,102,255,0.07);
+            --body-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--body-bg);
+            color: var(--text);
+            margin: 0;
+            min-height: 100vh;
+            transition: all 0.35s ease;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: width 0.35s ease;
+            overflow-y: auto;
+            z-index: 1050;
+        }
+
+            .sidebar.collapsed {
+                width: var(--sidebar-collapsed);
+            }
+
+                .sidebar.collapsed .sidebar-text,
+                .sidebar.collapsed .nav-section-title {
+                    display: none;
+                }
+
+                .sidebar.collapsed .nav-link {
+                    justify-content: center;
+                    padding: 0.9rem 1rem;
+                }
+
+        .sidebar-header {
+            padding: 1.4rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-section-title {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.65;
+            margin: 1.6rem 0 0.7rem 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+            .nav-link:hover,
+            .nav-link.active {
+                background: var(--hover-bg);
+                color: var(--primary);
+            }
+
+                .nav-link.active::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 3px;
+                    background: var(--primary);
+                }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 1.8rem 2.5rem;
+            transition: margin-left 0.35s ease;
+        }
+
+        @@media (max-width: 992px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.35s ease;
+                width: 280px !important;
+            }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                }
+        }
+    </style>
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Your sidebar header + nav items here (unchanged) -->
+        <div class="sidebar-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-25 rounded p-3 me-3">
+                    <i class="bi bi-bank fs-4 text-primary"></i>
+                </div>
+                <div class="sidebar-text">
+                    <h5 class="mb-0 fw-bold">BankManagement</h5>
+                    <small class="text-muted">Core System</small>
+                </div>
+            </div>
+            <button class="btn btn-link p-0 d-none d-lg-block" id="sidebarToggle">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+        </div>
+
+        <nav class="mt-3">
+            <nav class="mt-3">
+                <div class="nav-section-title">MAIN</div>
+
+                <a asp-controller="Home" asp-action="Index"
+                   class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"] == "Home" ? "active" : "")">
+                    <i class="bi bi-speedometer2 fs-5 me-3"></i>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+
+                <a asp-controller="AccountCustomer" asp-action="Index"
+                   class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"] == "AccountCustomer" ? "active" : "")">
+                    <i class="bi bi-people fs-5 me-3"></i>
+                    <span class="sidebar-text">Customers</span>
+                </a>
+
+             
+
+                <a asp-controller="Transaction" asp-action="Index"
+                   class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"] == "Transactions" ? "active" : "")">
+                    <i class="bi bi-arrow-left-right fs-5 me-3"></i>
+                    <span class="sidebar-text">Transactions</span>
+                </a>
+
+                <div class="nav-section-title mt-5">ORGANIZATION</div>
+
+                <a asp-controller="Branch" asp-action="Index"
+                   class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"] == "Branch" ? "active" : "")">
+                    <i class="bi bi-building fs-5 me-3"></i>
+                    <span class="sidebar-text">Branches</span>
+                </a>
+
+                <div class="nav-section-title mt-5">SYSTEM</div>
+
+                <a asp-controller="Account" asp-action="Logout"
+                   class="nav-link text-danger d-flex align-items-center">
+                    <i class="bi bi-box-arrow-right fs-5 me-3"></i>
+                    <span class="sidebar-text">Sign Out</span>
+                </a>
+            </nav>
+        </nav>
+    </div>
+
+    <!-- Top Bar -->
+    <header class="top-bar bg-dark border-bottom border-secondary">
+        <div class="d-flex justify-content-between align-items-center px-4 py-3 flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-4">
+                <button class="btn btn-link p-0 fs-3 d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h3 class="mb-0 fw-bold">@ViewData["Title"]</h3>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group input-group-sm" style="width: 240px;">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Search...">
+                </div>
+                <button class="btn btn-link position-relative p-0">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4</span>
+                </button>
+                <button class="btn btn-link p-0" id="themeToggle">
+                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+                </button>
+                <div class="dropdown">
+                    <a class="d-flex align-items-center gap-3 text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width:44px;height:44px;">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <div class="fw-medium">Admin</div>
+                            <small class="text-muted">admin@bank.bd</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme Toggle (Dark / Light)
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+
+        html.setAttribute('data-bs-theme', savedTheme);
+
+        function updateThemeIcon(theme) {
+            themeIcon.className = theme === 'dark'
+                ? 'bi bi-moon-stars-fill fs-5'
+                : 'bi bi-sun-fill fs-5';
+        }
+
+        updateThemeIcon(savedTheme);
+
+        themeToggle?.addEventListener('click', () => {
+            const current = html.getAttribute('data-bs-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-bs-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+        });
+
+        // Sidebar Toggle (desktop + mobile support)
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth >= 992) {
+                // Desktop: collapse/expand icons only
+                sidebar.classList.toggle('collapsed');
+            } else {
+                // Mobile: show/hide offcanvas
+                sidebar.classList.toggle('show');
+            }
+        });
+
+        // Close mobile sidebar when clicking outside (optional improvement)
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('[data-bs-target="#sidebar"]');
+            if (window.innerWidth < 992 &&
+                !sidebar.contains(e.target) &&
+                !toggleBtn?.contains(e.target) &&
+                sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+
+@* <!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankManagement • Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --sidebar-width: 260px;
@@ -99,7 +389,6 @@
             border-radius: 0;
             font-weight: 500;
             transition: all 0.2s ease;
-            position: relative;
         }
 
             .nav-link:hover,
@@ -124,7 +413,6 @@
             transition: margin-left 0.35s ease;
         }
 
-        /* Modern Dashboard Cards (optional - keep if you use them in pages) */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -136,6 +424,7 @@
                 transform: translateY(-6px);
             }
 
+        /* Modern Dashboard Cards */
         .dashboard-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -149,6 +438,45 @@
                 transform: translateY(-6px);
                 box-shadow: 0 12px 32px rgba(0,0,0,0.18);
             }
+
+        .card-header {
+            background: linear-gradient(135deg, rgba(51,102,255,0.06) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .progress {
+            height: 8px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        [data-bs-theme="light"] .progress {
+            background: rgba(0,0,0,0.07);
+        }
+
+        /* Light mode text fixes */
+        [data-bs-theme="light"] .text-white,
+        [data-bs-theme="light"] .text-muted:not(.badge),
+        [data-bs-theme="light"] .nav-link,
+        [data-bs-theme="light"] h3,
+        [data-bs-theme="light"] h4,
+        [data-bs-theme="light"] h5 {
+            color: var(--text) !important;
+        }
+
+        [data-bs-theme="light"] .input-group-text,
+        [data-bs-theme="light"] .form-control {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
 
         @@media (max-width: 992px) {
             .sidebar {
@@ -169,6 +497,7 @@
 <body>
 
     <!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
@@ -180,155 +509,63 @@
                     <small class="text-muted">Core System</small>
                 </div>
             </div>
-            <button class="btn btn-link p-0" id="sidebarToggle" type="button">
+            <button class="btn btn-link p-0 d-none d-lg-block" id="sidebarToggle">
                 <i class="bi bi-list fs-4"></i>
             </button>
         </div>
-
         <nav class="mt-3">
             <div class="nav-section-title">MAIN</div>
-            <a asp-page="/Index" class="nav-link active d-flex align-items-center">
+
+            <!-- Dashboard -->
+            <a asp-controller="Home" asp-action="Index"
+               class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
                 <i class="bi bi-speedometer2 fs-5 me-3"></i>
                 <span class="sidebar-text">Dashboard</span>
             </a>
-            <a asp-page="/Customers" class="nav-link d-flex align-items-center">
+
+            <!-- Customers -->
+            <a asp-controller="Customers" asp-action="Index"
+               class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"]?.ToString() == "Customers" ? "active" : "")">
                 <i class="bi bi-people fs-5 me-3"></i>
                 <span class="sidebar-text">Customers</span>
             </a>
-            <a asp-page="/Accounts" class="nav-link d-flex align-items-center">
+
+            <!-- Accounts -->
+            <a asp-controller="AccountCustomer" asp-action="Index"
+               class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"]?.ToString() == "AccountCustomer" ? "active" : "")">
                 <i class="bi bi-wallet2 fs-5 me-3"></i>
                 <span class="sidebar-text">Accounts</span>
             </a>
-            <a asp-page="/Transactions" class="nav-link d-flex align-items-center">
+
+            <!-- Transactions -->
+            <a asp-controller="Transaction" asp-action="Index"
+               class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction" ? "active" : "")">
                 <i class="bi bi-arrow-left-right fs-5 me-3"></i>
                 <span class="sidebar-text">Transactions</span>
             </a>
 
             <div class="nav-section-title mt-5">ORGANIZATION</div>
-            <a asp-page="/Branches" class="nav-link d-flex align-items-center">
+
+            <!-- Branches – corrected controller name -->
+            <a asp-controller="Branch" asp-action="Index"
+               class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["controller"]?.ToString() == "Branch" ? "active" : "")">
                 <i class="bi bi-building fs-5 me-3"></i>
                 <span class="sidebar-text">Branches</span>
             </a>
 
             <div class="nav-section-title mt-5">SYSTEM</div>
-            <a href="#" class="nav-link text-danger d-flex align-items-center">
+
+            <!-- Logout -->
+            <a asp-controller="Account" asp-action="Logout"
+               class="nav-link text-danger d-flex align-items-center">
                 <i class="bi bi-box-arrow-right fs-5 me-3"></i>
                 <span class="sidebar-text">Sign Out</span>
             </a>
         </nav>
+
     </div>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        @RenderBody()
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <script>
-        // Sidebar Toggle
-        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('collapsed');
-
-            // Mobile behavior: show/hide full sidebar
-            if (window.innerWidth < 992) {
-                sidebar.classList.toggle('show');
-            }
-        });
-
-        // Optional: Date & Time in Bangladesh (you can remove or move to specific page)
-        function updateDateTime() {
-            const now = new Date().toLocaleString('en-US', {
-                timeZone: 'Asia/Dhaka',
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-            const el = document.getElementById('currentDateTime');
-            if (el) el.textContent = now;
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 60000);
-    </script>
-
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
-
-
- *@
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BankManagementSystem</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BankManagementSystem.styles.css" asp-append-version="true" />
-
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-
-    <!-- Bootstrap JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Option 1 - Most Recommended (Clean & Professional) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
-
-
-    <!-- Option 3 - Classic + Reliable -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    @RenderSection("Styles", required: false)  <!-- এখানে যোগ করো -->
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BankManagementSystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
+    <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -343,6 +580,13 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
- 
+
+
+
+
+
+
+   *@
