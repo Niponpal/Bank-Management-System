@@ -69,6 +69,38 @@ namespace BankManagementSystem.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedBy = 0L,
+                            CreatedDateUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Default role assigned to all Administrator.",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR",
+                            StatusId = 0
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreatedBy = 0L,
+                            CreatedDateUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Default role assigned to all Admin.",
+                            Name = "Admin",
+                            NormalizedName = "Admin",
+                            StatusId = 0
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreatedBy = 0L,
+                            CreatedDateUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Default role assigned to all Customer.",
+                            Name = "Customer",
+                            NormalizedName = "Customer",
+                            StatusId = 0
+                        });
                 });
 
             modelBuilder.Entity("BankManagementSystem.Auth_IdentityModel.IdentityModel+RoleClaim", b =>
@@ -188,6 +220,74 @@ namespace BankManagementSystem.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            AccessFailedCount = 0,
+                            Address = "",
+                            ConcurrencyStamp = "a74f5bcb-8688-4868-bd74-a6849e2bc7a7",
+                            CreatedBy = 0L,
+                            CreatedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = true,
+                            FullName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMLTCw8sGfq3dCsgpYL3vQ/HIRvHxjYXBa62Gx0RqKpdj1ysawrV8jnGphDDSNhYEw==",
+                            Phone = "",
+                            PhoneNumberConfirmed = false,
+                            RegisterDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SecurityStamp = "3945613b-5466-49ce-bd81-c618f156f3ec",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@localhost.com"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            AccessFailedCount = 0,
+                            Address = "",
+                            ConcurrencyStamp = "f69b9c9b-0b2d-4c70-8035-1472fb0d0a05",
+                            CreatedBy = 0L,
+                            CreatedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "administrator@localhost.com",
+                            EmailConfirmed = true,
+                            FullName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMINISTRATOR@LOCALHOST.COM",
+                            NormalizedUserName = "ADMINISTRATOR@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBxpPFc4xF+xOAp8KYZ5PUYUPYe5Upv+3/FnUyvsVIOt0ggvpEMb1DfHIT9GdrzGrg==",
+                            Phone = "",
+                            PhoneNumberConfirmed = false,
+                            RegisterDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SecurityStamp = "5b8638e9-6f13-4e02-952a-43c732192ff3",
+                            TwoFactorEnabled = false,
+                            UserName = "administrator@localhost.com"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AccessFailedCount = 0,
+                            Address = "",
+                            ConcurrencyStamp = "4f4a208d-1e04-4d32-ae29-4a82d20072e7",
+                            CreatedBy = 0L,
+                            CreatedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "customer@localhost.com",
+                            EmailConfirmed = true,
+                            FullName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "CUSTOMER@LOCALHOST.COM",
+                            NormalizedUserName = "CUSTOMER@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH7YBVwtEpNe6D7JmnBALDA02b9y7z2HUyKA7Z4gZgTI1jfpy56gGsPuHQYMZCbDog==",
+                            Phone = "",
+                            PhoneNumberConfirmed = false,
+                            RegisterDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SecurityStamp = "dfacec12-bc6e-4489-bf08-dd7dd0ff5e8d",
+                            TwoFactorEnabled = false,
+                            UserName = "customer@localhost.com"
+                        });
                 });
 
             modelBuilder.Entity("BankManagementSystem.Auth_IdentityModel.IdentityModel+UserClaim", b =>
@@ -248,6 +348,23 @@ namespace BankManagementSystem.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            UserId = 2L,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            UserId = 3L,
+                            RoleId = 3L
+                        });
                 });
 
             modelBuilder.Entity("BankManagementSystem.Auth_IdentityModel.IdentityModel+UserToken", b =>

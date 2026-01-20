@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BankManagementSystem.Migrations
 {
     /// <inheritdoc />
@@ -235,6 +237,36 @@ namespace BankManagementSystem.Migrations
                         principalTable: "AccountCustomers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedBy", "CreatedDateUtc", "Description", "Name", "NormalizedName", "StatusId", "UpdatedBy", "UpdatedDateUtc" },
+                values: new object[,]
+                {
+                    { 1L, null, 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Default role assigned to all Administrator.", "Administrator", "ADMINISTRATOR", 0, null, null },
+                    { 2L, null, 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Default role assigned to all Admin.", "Admin", "Admin", 0, null, null },
+                    { 3L, null, 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Default role assigned to all Customer.", "Customer", "Customer", 0, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedBy", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "RegisterDate", "SecurityStamp", "TwoFactorEnabled", "UpdatedBy", "UpdatedDate", "UserName" },
+                values: new object[,]
+                {
+                    { 1L, 0, "", "a74f5bcb-8688-4868-bd74-a6849e2bc7a7", 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "admin@localhost.com", true, "", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEMLTCw8sGfq3dCsgpYL3vQ/HIRvHxjYXBa62Gx0RqKpdj1ysawrV8jnGphDDSNhYEw==", "", null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "3945613b-5466-49ce-bd81-c618f156f3ec", false, null, null, "admin@localhost.com" },
+                    { 2L, 0, "", "f69b9c9b-0b2d-4c70-8035-1472fb0d0a05", 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "administrator@localhost.com", true, "", false, null, "ADMINISTRATOR@LOCALHOST.COM", "ADMINISTRATOR@LOCALHOST.COM", "AQAAAAIAAYagAAAAEBxpPFc4xF+xOAp8KYZ5PUYUPYe5Upv+3/FnUyvsVIOt0ggvpEMb1DfHIT9GdrzGrg==", "", null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "5b8638e9-6f13-4e02-952a-43c732192ff3", false, null, null, "administrator@localhost.com" },
+                    { 3L, 0, "", "4f4a208d-1e04-4d32-ae29-4a82d20072e7", 0L, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "customer@localhost.com", true, "", false, null, "CUSTOMER@LOCALHOST.COM", "CUSTOMER@LOCALHOST.COM", "AQAAAAIAAYagAAAAEH7YBVwtEpNe6D7JmnBALDA02b9y7z2HUyKA7Z4gZgTI1jfpy56gGsPuHQYMZCbDog==", "", null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "dfacec12-bc6e-4489-bf08-dd7dd0ff5e8d", false, null, null, "customer@localhost.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1L, 1L },
+                    { 2L, 2L },
+                    { 3L, 3L }
                 });
 
             migrationBuilder.CreateIndex(

@@ -23,14 +23,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         }, new User
         {
             Id = 2,
-            //Email = "employee@localhost.com",
-            //NormalizedEmail = "EMPLOYEE@LOCALHOST.COM",
-            //UserName = "employee@localhost.com",
-            //NormalizedUserName = "EMPLOYEE@LOCALHOST.COM",
-            Email = "Admin@localhost.com",
-            NormalizedEmail = "SELLER@LOCALHOST.COM",
-            UserName = "Admin@localhost.com",
-            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+            Email = "administrator@localhost.com",
+            NormalizedEmail = "ADMINISTRATOR@LOCALHOST.COM",
+            UserName = "administrator@localhost.com",
+            NormalizedUserName = "ADMINISTRATOR@LOCALHOST.COM",
             PasswordHash = hasher.HashPassword(null, "P@ssword1"),
             EmailConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString()
@@ -38,13 +34,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
          new User
          {
              Id = 3,
-             //Email = "employee@localhost.com",
-             //NormalizedEmail = "EMPLOYEE@LOCALHOST.COM",
-             //UserName = "employee@localhost.com",
-             //NormalizedUserName = "EMPLOYEE@LOCALHOST.COM",
-             Email = "Customer@localhost.com",
-             NormalizedEmail = "Customer@LOCALHOST.COM",
-             UserName = "Customer@localhost.com",
+             Email = "customer@localhost.com",
+             NormalizedEmail = "CUSTOMER@LOCALHOST.COM",
+             UserName = "customer@localhost.com",
              NormalizedUserName = "CUSTOMER@LOCALHOST.COM",
              PasswordHash = hasher.HashPassword(null, "P@ssword1"),
              EmailConfirmed = true,
