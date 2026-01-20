@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static CatMS.Auth_IdentityModel.IdentityModel;
+using static BankManagementSystem.Auth_IdentityModel.IdentityModel;
 
 namespace CatMS.Data.Configuration;
 
@@ -27,13 +27,32 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             //NormalizedEmail = "EMPLOYEE@LOCALHOST.COM",
             //UserName = "employee@localhost.com",
             //NormalizedUserName = "EMPLOYEE@LOCALHOST.COM",
-            Email = "seller@localhost.com",
+            Email = "Admin@localhost.com",
             NormalizedEmail = "SELLER@LOCALHOST.COM",
-            UserName = "seller@localhost.com",
-            NormalizedUserName = "SELLER@LOCALHOST.COM",
+            UserName = "Admin@localhost.com",
+            NormalizedUserName = "ADMIN@LOCALHOST.COM",
             PasswordHash = hasher.HashPassword(null, "P@ssword1"),
             EmailConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString()
-        });
+        },
+         new User
+         {
+             Id = 3,
+             //Email = "employee@localhost.com",
+             //NormalizedEmail = "EMPLOYEE@LOCALHOST.COM",
+             //UserName = "employee@localhost.com",
+             //NormalizedUserName = "EMPLOYEE@LOCALHOST.COM",
+             Email = "Customer@localhost.com",
+             NormalizedEmail = "Customer@LOCALHOST.COM",
+             UserName = "Customer@localhost.com",
+             NormalizedUserName = "CUSTOMER@LOCALHOST.COM",
+             PasswordHash = hasher.HashPassword(null, "P@ssword1"),
+             EmailConfirmed = true,
+             SecurityStamp = Guid.NewGuid().ToString()
+         }
+
+
+
+        );
     }
 }
