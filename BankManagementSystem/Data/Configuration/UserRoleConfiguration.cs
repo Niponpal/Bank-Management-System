@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static CatMS.Auth_IdentityModel.IdentityModel;
+using static BankManagementSystem.Auth_IdentityModel.IdentityModel;
 
 namespace CatMS.Data.Configuration;
 
@@ -16,6 +16,12 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
         {
             RoleId = 2,
             UserId = 2,
-        });
+        }, new UserRole
+        {
+            RoleId = 3,
+            UserId = 3,
+        }
+
+        );
     }
 }
