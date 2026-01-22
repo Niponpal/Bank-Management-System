@@ -111,8 +111,9 @@
                                     </span>
                                 }
                             </td>
-                            <td>@(item.Branch?.BranchName?? "—")</td>
-                            <td class="text-muted">@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td>@(item.Branch == null ? "Branch NULL" : item.Branch.BranchName)</td>
+
+                              <td class="text-muted">@item.CreatedAt.ToString("dd MMM yyyy")</td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm">
                                     <a asp-action="Details" asp-route-id="@item.Id"
