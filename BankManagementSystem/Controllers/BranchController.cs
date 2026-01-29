@@ -18,27 +18,30 @@ public class BranchController : Controller
         var data = await _branchRepository.GetAllBranchAsync(cancellationToken);
         return View(data);
     }
+
+
     [HttpGet]
-    public async Task<IActionResult> CreateOrEdit(int id,CancellationToken cancellationToken) 
+    public async Task<IActionResult> CreateOrEdit(int id, CancellationToken cancellationToken)
     {
-       
-        if (id== 0)
+
+        if (id == 0)
         {
-         
+
             return View(new Models.Branch());
         }
         else
         {
-            var data = await _branchRepository.GetBranchByIdAsync(id,cancellationToken);
-            if(data != null)
+            var data = await _branchRepository.GetBranchByIdAsync(id, cancellationToken);
+            if (data != null)
             {
-               
+
                 return View(data);
-               
+
             }
             return NotFound();
         }
     }
+
     [HttpPost]
     public async Task<IActionResult> CreateOrEdit(Models.Branch branch,CancellationToken cancellationToken)
     {
