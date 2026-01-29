@@ -10,6 +10,7 @@ public class TransactionController : Controller
 
     private readonly IAccountCustomerRepository _accountCustomerRepository;
 
+
     public TransactionController(ITransactionRepository transactionRepository, IAccountCustomerRepository accountCustomerRepository)
     {
         _transactionRepository = transactionRepository;
@@ -21,24 +22,26 @@ public class TransactionController : Controller
         return View(data);
     }
     [HttpGet]
-    public async Task<IActionResult> CreateOrEdit(long id,CancellationToken cancellationToken)
+
+    public async Task<IActionResult> CreateOrEdit(long id, CancellationToken cancellationToken)
     {
         ViewData["AccountCustomerId"] = await _accountCustomerRepository.DropdownAsync(cancellationToken);
-        if (id== 0)
+        if (id == 0)
         {
             return View(new Models.Transaction());
         }
         else
         {
-            var data = await _transactionRepository.GetTransactionByIdAsync(id,cancellationToken);
-            if(data != null)
+            var data = await _transactionRepository.GetTransactionByIdAsync(id, cancellationToken);
+            if (data != null)
             {
                 return View(data);
-               
+
             }
             return NotFound();
         }
     }
+
     [HttpPost]
     public async Task<IActionResult> CreateOrEdit(Models.Transaction transaction,CancellationToken cancellationToken)
     {
