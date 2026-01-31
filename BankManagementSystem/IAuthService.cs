@@ -52,7 +52,7 @@ public class AuthService : IAuthService
             };
         }
 
-        await _userManager.AddToRoleAsync(user, request.AccountType);
+
 
         return new RegistrationResponse
         {

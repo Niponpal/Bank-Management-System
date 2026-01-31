@@ -87,7 +87,9 @@
                     </div>
 
                     <div class="card-body p-4 p-md-5">
-                        <form asp-action="Register" method="post" novalidate>
+                    
+                            <form asp-action="Register" method="post" novalidate>
+
                             <!-- Full Name -->
                             <div class="mb-4">
                                 <label asp-for="FullName" class="form-label fw-medium">Full Name</label>
@@ -119,6 +121,8 @@
                                 </div>
                                 <span asp-validation-for="PhoneNumber" class="text-danger small d-block mt-1"></span>
                             </div>
+
+                          
 
                             <!-- Address -->
                             <div class="mb-4">
