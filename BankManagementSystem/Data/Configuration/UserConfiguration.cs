@@ -43,8 +43,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
              SecurityStamp = Guid.NewGuid().ToString()
          }
 
-
-
         );
     }
 }

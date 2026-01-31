@@ -52,8 +52,6 @@ public class AuthService : IAuthService
             };
         }
 
-
-
         return new RegistrationResponse
         {
             Success = true,

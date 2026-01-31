@@ -2,6 +2,7 @@ using BankManagementSystem;
 using BankManagementSystem.Data;
 using BankManagementSystem.Helper;
 using BankManagementSystem.Repository;
+using BankManagementSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static BankManagementSystem.Auth_IdentityModel.IdentityModel;
@@ -36,6 +37,8 @@ builder.Services.AddIdentity<User, Role>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 // Register SignInHelper
 builder.Services.AddScoped<ISignInHelper, SignInHelper>();
+
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
 
 var app = builder.Build();
 

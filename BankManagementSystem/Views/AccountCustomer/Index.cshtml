@@ -1,4 +1,8 @@
-﻿@model IEnumerable<BankManagementSystem.Models.AccountCustomer>
+﻿@using BankManagementSystem.Helper
+@using BankManagementSystem.Services
+@model IEnumerable<BankManagementSystem.Models.AccountCustomer>
+@inject ISignInHelper SignInHelper
+@inject IRolePermissionService RolePermissionService
 
 @{
     ViewData["Title"] = "Accounts";
