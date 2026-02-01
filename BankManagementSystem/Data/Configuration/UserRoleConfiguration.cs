@@ -21,7 +21,6 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             RoleId = 3,
             UserId = 3,
         }
-
         );
     }
 }

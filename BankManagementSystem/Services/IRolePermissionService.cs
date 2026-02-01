@@ -15,8 +15,8 @@ public class RolePermissionService : IRolePermissionService
         new()
         {
           { "Administrator", (true, true, true, true) },
-          { "Seller",       (true, true, false, true) },
-          { "Buyer",       (true, false, false, true) }
+          { "Admin",       (true, true, false, true) },
+          { "Customer",       (true, false, false, true) }
         };
 
 

@@ -37,7 +37,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 // Register SignInHelper
 builder.Services.AddScoped<ISignInHelper, SignInHelper>();
-
+// Register RolePermissionService
 builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
 
 var app = builder.Build();
