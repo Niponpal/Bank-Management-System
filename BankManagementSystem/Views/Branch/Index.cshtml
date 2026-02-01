@@ -1,6 +1,13 @@
-﻿@model IEnumerable<BankManagementSystem.Models.Branch>
+﻿@using BankManagementSystem.Helper
+@using BankManagementSystem.Services
+@model IEnumerable<BankManagementSystem.Models.Branch>
+@inject ISignInHelper SignInHelper
+@inject IRolePermissionService RolePermissionService
+
+
 
 @{
+    var roles = SignInHelper.Roles;
     ViewData["Title"] = "Branches";
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
@@ -170,22 +177,35 @@
                                 <small>@branch.CreatedAt.ToString("hh:mm tt")</small>
                             </td>
                             <td class="text-center">
+                           
                                 <div class="btn-group btn-group-sm">
-                                    <a asp-action="Details" asp-route-id="@branch.Id"
-                                       class="btn btn-outline-info" title="View">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a asp-action="CreateOrEdit" asp-route-id="@branch.Id"
-                                       class="btn btn-outline-warning" title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form asp-action="Delete" asp-route-id="@branch.Id" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-outline-danger"
-                                                onclick="return confirm('Delete @branch.BranchName?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    @if (RolePermissionService.CanView(roles))
+                                    {
+                                        <a asp-action="Details" asp-route-id="@branch.Id"
+                                           class="btn btn-outline-info" title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    }
+                                   
+                                    @if (RolePermissionService.CanEdit(roles))
+                                    {
+                                        <a asp-action="CreateOrEdit" asp-route-id="@branch.Id"
+                                           class="btn btn-outline-warning" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    }
+                                   
+                                    @if (RolePermissionService.CanDelete(roles))
+                                    {
+                                        <form asp-action="Delete" asp-route-id="@branch.Id" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger"
+                                                    onclick="return confirm('Delete @branch.BranchName?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                  
                                 </div>
                             </td>
                         </tr>

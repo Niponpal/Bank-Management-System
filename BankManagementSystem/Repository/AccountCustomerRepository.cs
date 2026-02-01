@@ -53,7 +53,7 @@ public class AccountCustomerRepository : IAccountCustomerRepository
 
     public async Task<IEnumerable<AccountCustomer>> GetAllAccountCustomerAsync(CancellationToken cancellationToken)
     {
-        var data = await _context.AccountCustomers.ToListAsync(cancellationToken);
+        var data = await _context.AccountCustomers.Include(x=>x.Branch).ToListAsync(cancellationToken);
         if (data != null)
         {
             return data;
