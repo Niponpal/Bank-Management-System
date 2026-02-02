@@ -33,7 +33,7 @@ public class TransactionRepository : ITransactionRepository
 
     public async Task<IEnumerable<Transaction>> GetAllTransactionAsync(CancellationToken cancellationToken)
     {
-       var data = await _context.Transactions.ToListAsync(cancellationToken);
+       var data = await _context.Transactions.Include(x=>x.AccountCustomer).ToListAsync(cancellationToken);
         if (data != null && data.Count > 0)
         {
             return data;
