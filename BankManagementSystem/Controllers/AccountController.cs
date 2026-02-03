@@ -53,10 +53,7 @@ public class AccountController : Controller
             await _signInManager.SignInAsync(user, false);
         }
         return RedirectToAction("Index", "Dashboard");
-
-
     }
-
 
     [HttpPost]
     [AllowAnonymous]
@@ -78,7 +75,6 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Login()
@@ -93,6 +89,4 @@ public class AccountController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
-
-
 }

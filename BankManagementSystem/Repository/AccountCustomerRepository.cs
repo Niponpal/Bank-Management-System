@@ -51,15 +51,33 @@ public class AccountCustomerRepository : IAccountCustomerRepository
         return null;
     }
 
-    public async Task<IEnumerable<AccountCustomer>> GetAllAccountCustomerAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<AccountCustomer>> GetAllAccountCustomerAsync(
+        CancellationToken cancellationToken)
     {
-        var data = await _context.AccountCustomers.Include(x=>x.Branch).ToListAsync(cancellationToken);
-        if (data != null)
-        {
-            return data;
-        }
-        return Enumerable.Empty<AccountCustomer>();
+        return await _context.AccountCustomers
+            .Select(x => new AccountCustomer
+            {
+                Id = x.Id,
+                AccountNumber = x.AccountNumber,
+                FullName = x.FullName,
+                Phone = x.Phone,
+                NID = x.NID,
+                Balance = x.Balance,
+                IsActive = x.IsActive,
+                CreatedAt = x.CreatedAt,
+
+                // 👇 Project Branch manually
+                Branch = x.Branch == null
+                    ? null
+                    : new Branch
+                    {
+                        Id = x.Branch.Id,
+                        BranchName = x.Branch.BranchName
+                    }
+            })
+            .ToListAsync(cancellationToken);
     }
+
 
     public async Task<AccountCustomer?> UpdateAccountCustomerAsync(AccountCustomer accountCustomer, CancellationToken cancellationToken)
     {
